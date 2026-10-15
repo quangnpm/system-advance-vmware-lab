@@ -1,0 +1,46 @@
+---
+- name: Create application directory
+  ansible.builtin.file:
+    path: "{{ deploy_dir }}"
+    state: directory
+    mode: '0755'
+
+- name: Copy application source
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../app/"
+    dest: "{{ deploy_dir }}/app/"
+    mode: preserve
+
+- name: Copy Dockerfile
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../Dockerfile"
+    dest: "{{ deploy_dir }}/Dockerfile"
+    mode: '0644'
+
+- name: Copy Compose definition
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/../compose.yaml"
+    dest: "{{ deploy_dir }}/compose.yaml"
+    mode: '0644'
+
+- name: Build and reconcile web container
+  community.docker.docker_compose_v2:
+    project_src: "{{ deploy_dir }}"
+    state: present
+    build: always
+    pull: missing
+    ignore_build_events: true
+
+- name: Confirm container reports healthy
+  ansible.builtin.command:
+    argv:
+      - docker
+      - inspect
+      - --format
+      - "{{ '{{' }}.State.Health.Status{{ '}}' }}"
+      - system-advance-web
+  changed_when: false
+  register: web_health
+  retries: 10
+  delay: 3
+  until: web_health.stdout == 'healthy'

@@ -1,0 +1,7 @@
+---
+- name: Configure and deploy the demo web application
+  hosts: web
+  vars:
+    deploy_dir: /home/labdeploy/system-advance-lab
+  roles:
+    - webapp
