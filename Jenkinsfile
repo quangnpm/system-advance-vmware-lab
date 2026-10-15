@@ -7,7 +7,7 @@ pipeline {
         TARGET_USER = 'labdeploy'
         SSH_CREDENTIALS_ID = 'lab-target-key'
         DEPLOY_DIR = '/home/labdeploy/system-advance-lab'
-        ENABLE_K8S = 'false'
+        ENABLE_K8S = 'true'
     }
     stages {
         stage('Validate') {
