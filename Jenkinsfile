@@ -3,7 +3,7 @@ pipeline {
     triggers { pollSCM('H/1 * * * *') }
     options { timestamps(); disableConcurrentBuilds() }
     environment {
-        TARGET_HOST = '192.168.56.20'
+        TARGET_HOST = '192.168.1.131'
         TARGET_USER = 'labdeploy'
         SSH_CREDENTIALS_ID = 'lab-target-key'
         DEPLOY_DIR = '/home/labdeploy/system-advance-lab'
