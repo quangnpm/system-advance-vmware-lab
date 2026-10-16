@@ -3,11 +3,11 @@ pipeline {
     triggers { pollSCM('H/1 * * * *') }
     options { timestamps(); disableConcurrentBuilds() }
     environment {
-        TARGET_HOST = '192.168.1.131'
+        TARGET_HOST = '10.20.1.6'
         TARGET_USER = 'labdeploy'
         SSH_CREDENTIALS_ID = 'lab-target-key'
         DEPLOY_DIR = '/home/labdeploy/system-advance-lab'
-        ENABLE_K8S = 'true'
+        ENABLE_K8S = 'false'
     }
     stages {
         stage('Validate') {
